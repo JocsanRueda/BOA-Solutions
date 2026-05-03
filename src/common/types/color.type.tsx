@@ -1,0 +1,1 @@
+export type ColorType ="blue" | "red" | "green" | "yellow" | "purple" | "orange" | "pink" | "teal"
