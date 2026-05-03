@@ -1,34 +1,40 @@
+import { useTheme } from "@/components/theme-provider";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Send,
-  AtSign,
-  Earth,
-  CheckCheck,
-  X,
-  Clipboard,
-  Smartphone
-} from "lucide-react";
-import { FormProvider, useForm } from "react-hook-form";
+import { EMAIL, PHONE_NUMBER } from "@/constants/const";
 import { contactSchema } from "@/schemas/contact.schema";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import emailjs from "@emailjs/browser";
-import { Toaster } from "sonner";
-import { toast } from "sonner"
-import { useTheme } from "@/components/theme-provider";
-import { motion, AnimatePresence } from "framer-motion";
-import { useState, useCallback } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  AtSign,
+  CheckCheck,
+  Clipboard,
+  Earth,
+  Send,
+  Smartphone,
+  X
+} from "lucide-react";
+import { useCallback, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { toast, Toaster } from "sonner";
+import { z } from "zod";
 
 export function ContactPage() {
+
+  // Load EmailJS IDs from Vite environment variables.
+  // Create a local `.env` with these keys (see .env.example).
+  const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID ?? "";
+  const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID ?? "";
+  const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY ?? "";
 
   const form = useForm<z.infer<typeof contactSchema>>({
     resolver: zodResolver(contactSchema),
@@ -60,10 +66,10 @@ export function ContactPage() {
     };
 
     emailjs.send(
-      "service_h6uggvv",
-      "template_ugtq53f",
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID,
       templateParams,
-      "nCjT5uK6iCjFxDory"
+      EMAILJS_PUBLIC_KEY
     )
       .then(() => {
 
@@ -105,11 +111,11 @@ export function ContactPage() {
               <div>
                 <p className="text-sm text-gray-600 dark:text-gray-400 select-none">Email</p>
                 <div className="flex items-center space-x-2">
-                  <p>contacto@boasolutions.com</p>
+                  <p>{EMAIL}</p>
                   <div className="relative flex items-center">
                     <Clipboard
                       className="w-5 h-5 cursor-pointer text-gray-600 dark:text-gray-200 hover:bg-blue-500 p-0.5 hover:text-white dark:hover:text-black rounded transition-colors"
-                      onClick={() => handleCopy("contacto@boasolutions.com", "email")}
+                      onClick={() => handleCopy(EMAIL, "email")}
                     />
                     <AnimatePresence>
                       {copiedField === "email" && (
@@ -133,11 +139,11 @@ export function ContactPage() {
               <div>
                 <p className="text-sm text-gray-600 dark:text-gray-400 select-none">Teléfono</p>
                 <div className="flex items-center space-x-2">
-                  <p><span className="font-semibold select-none">+504</span> 1234-5678</p>
+                  <p><span className="font-semibold select-none">+504</span> {PHONE_NUMBER}</p>
                   <div className="relative flex items-center">
                     <Clipboard
                       className="w-5 h-5 cursor-pointer text-gray-600 dark:text-gray-200 hover:bg-blue-500 p-0.5 hover:text-white dark:hover:text-black rounded transition-colors"
-                      onClick={() => handleCopy("+50412345678", "phone")}
+                      onClick={() => handleCopy(PHONE_NUMBER, "phone")}
                     />
                     <AnimatePresence>
                       {copiedField === "phone" && (

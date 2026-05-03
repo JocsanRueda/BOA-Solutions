@@ -1,4 +1,4 @@
-import { Code2, Github, Linkedin, Mail, Twitter } from "lucide-react";
+import { Code2, Mail } from "lucide-react";
 import { Link } from "react-scroll";
 import { routeEnum } from "@/common/enum/route.enum";
 
@@ -21,7 +21,7 @@ export default function Footer() {
         </div>
 
         <div className="flex items-center gap-6">
-          <a href="#" className="text-gray-400 hover:text-teal-500 transition-colors">
+          {/* <a href="#" className="text-gray-400 hover:text-teal-500 transition-colors">
             <Twitter className="w-5 h-5" />
           </a>
           <a href="#" className="text-gray-400 hover:text-teal-500 transition-colors">
@@ -29,7 +29,7 @@ export default function Footer() {
           </a>
           <a href="#" className="text-gray-400 hover:text-teal-500 transition-colors">
             <Linkedin className="w-5 h-5" />
-          </a>
+          </a> */}
           <Link 
             to={routeEnum.CONTACT} 
             smooth={true} 
