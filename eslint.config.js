@@ -6,6 +6,7 @@ import unusedImports from "eslint-plugin-unused-imports";
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
+  { ignores: ["node_modules/", "dist/", "build/", ".vite/", "coverage/"] },
   { files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"] },
   { settings: { react: { version: "detect" } } },
   { languageOptions: { globals: globals.node } },

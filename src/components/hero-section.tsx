@@ -1,19 +1,13 @@
-import { Button } from "@/components/ui/button";
-import { scroller } from "react-scroll";
 import { routeEnum } from "@/common/enum/route.enum";
+import { Button } from "@/components/ui/button";
 import { useActiveSection } from "@/context/active-section.context";
 import { motion } from "framer-motion";
 import { Mail } from "lucide-react";
-import { useState } from "react";
+import { scroller } from "react-scroll";
 import { IconTooltip } from "./icon-tooltip";
 
 export default function HeroSection() {
   const { setActiveSection } = useActiveSection();
-  const [stats] = useState({
-    efficiencyGain: 40,
-    aiSolutions: 15,
-    hoursSaved: 500,
-  });
 
   const handleClick = (section: string) => {
     const newActiveSection = {
