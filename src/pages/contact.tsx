@@ -13,7 +13,7 @@ import { EMAIL, PHONE_NUMBER } from "@/constants/const";
 import { contactSchema } from "@/schemas/contact.schema";
 import emailjs from "@emailjs/browser";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import {
   AtSign,
   CheckCheck,
@@ -91,7 +91,7 @@ export function ContactPage() {
 
   return (
     <div className="flex items-center justify-center px-5 sm:px-4 py-10 md:my-32 w-full max-w-6xl mx-auto">
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -120,14 +120,14 @@ export function ContactPage() {
                     />
                     <AnimatePresence>
                       {copiedField === "email" && (
-                        <motion.div
+                        <m.div
                           initial={{ opacity: 0, y: 5 }}
                           animate={{ opacity: 1, y: -20 }}
                           exit={{ opacity: 0, y: 0 }}
                           className="absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-900 text-white dark:bg-white dark:text-gray-900 text-sm px-3 py-1.5 rounded-lg shadow-xl whitespace-nowrap z-50 pointer-events-none font-medium select-none"
                         >
                           ¡Copiado!
-                        </motion.div>
+                        </m.div>
                       )}
                     </AnimatePresence>
                   </div>
@@ -148,14 +148,14 @@ export function ContactPage() {
                     />
                     <AnimatePresence>
                       {copiedField === "phone" && (
-                        <motion.div
+                        <m.div
                           initial={{ opacity: 0, y: 5 }}
                           animate={{ opacity: 1, y: -20 }}
                           exit={{ opacity: 0, y: 0 }}
                           className="absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-900 text-white dark:bg-white dark:text-gray-900 text-sm px-3 py-1.5 rounded-lg shadow-xl whitespace-nowrap z-50 pointer-events-none font-medium select-none"
                         >
                           ¡Copiado!
-                        </motion.div>
+                        </m.div>
                       )}
                     </AnimatePresence>
                   </div>
@@ -237,7 +237,7 @@ export function ContactPage() {
           </FormProvider>
 
         </div>
-      </motion.div>
+      </m.div>
 
     </div>
   );

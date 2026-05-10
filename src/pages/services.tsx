@@ -1,6 +1,6 @@
 import CardSkill from "@/components/card-skill";
 import { data } from "@/data/skills/skills.data";
-import { motion, Variants } from "framer-motion";
+import { m, Variants } from "framer-motion";
 
 export function Services() {
   const container: Variants = {
@@ -20,7 +20,7 @@ export function Services() {
 
   return (
     <div className="h-full w-full max-w-7xl mx-auto flex flex-col justify-center gap-12 my-10 md:my-32 px-6">
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: -20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -39,9 +39,9 @@ export function Services() {
         <p className="text-gray-600 dark:text-gray-400 max-w-2xl text-lg leading-relaxed">
           Soluciones tecnológicas de vanguardia diseñadas para potenciar y escalar tu negocio mediante la automatización y la inteligencia artificial.
         </p>
-      </motion.div>
+      </m.div>
 
-      <motion.div
+      <m.div
         variants={container}
         initial="hidden"
         whileInView="show"
@@ -50,7 +50,7 @@ export function Services() {
       >
         {
           data.map((item) => (
-            <motion.div key={item.title} variants={itemAnim} className="h-full">
+            <m.div key={item.title} variants={itemAnim} className="h-full">
               <CardSkill
                 id={item.id}
                 icon={item.icon}
@@ -62,10 +62,10 @@ export function Services() {
                 lineColor={item.lineColor}
                 stack={item.stack}
               />
-            </motion.div>
+            </m.div>
           ))
         }
-      </motion.div>
+      </m.div>
     </div>
   );
 }

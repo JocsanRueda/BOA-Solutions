@@ -2,6 +2,7 @@ import BlurBackground from "@/components/blur-background";
 import Layout from "@/components/layout";
 import { ThemeProvider } from "@/components/theme-provider";
 import { lazy, Suspense } from "react";
+import { LazyMotion, domAnimation } from "framer-motion";
 const ParticlesBackGround = lazy(() => import("@/components/particles-background"));
 const GlowBackground = lazy(() => import("@/components/glow-background"));
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
@@ -27,25 +28,27 @@ function App() {
   return (
     <>
       <ThemeProvider defaultTheme="dark">
-        <ActiveSectionProvider>
-          <Router basename="/">
-            <BlurBackground />
+        <LazyMotion features={domAnimation}>
+          <ActiveSectionProvider>
+            <Router basename="/">
+              <BlurBackground />
 
-            <Layout>
+              <Layout>
 
-              <Routes>
-                <Route
-                  path="/"
-                  element={<AnimationSection sections={sections} />}
-                />
-              </Routes>
-            </Layout>
-          </Router>
-          <Suspense fallback={null}>
-            <ParticlesBackGround />
-            <GlowBackground />
-          </Suspense>
-        </ActiveSectionProvider>
+                <Routes>
+                  <Route
+                    path="/"
+                    element={<AnimationSection sections={sections} />}
+                  />
+                </Routes>
+              </Layout>
+            </Router>
+            <Suspense fallback={null}>
+              <ParticlesBackGround />
+              <GlowBackground />
+            </Suspense>
+          </ActiveSectionProvider>
+        </LazyMotion>
       </ThemeProvider>
     </>
   );

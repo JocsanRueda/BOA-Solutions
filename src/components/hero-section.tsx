@@ -1,7 +1,7 @@
 import { routeEnum } from "@/common/enum/route.enum";
 import { Button } from "@/components/ui/button";
 import { useActiveSection } from "@/context/active-section.context";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { ArrowRight, Mail } from "lucide-react";
 import { scroller } from "react-scroll";
 
@@ -30,7 +30,7 @@ export default function HeroSection() {
       <div className="max-w-4xl w-full mx-auto flex flex-col items-center text-center relative z-10">
 
         {/* Content */}
-        <motion.div
+        <m.div
           className="flex flex-col items-center gap-6"
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -84,7 +84,7 @@ export default function HeroSection() {
               <p className="text-sm text-gray-500 dark:text-gray-400">Nuestro proceso</p>
             </div>
           </div>
-        </motion.div>
+        </m.div>
 
       </div>
     </div>

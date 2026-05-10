@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Lottie from "lottie-react";
 import aboutLottie from "@/assets/lotties/about.json";
 
@@ -26,7 +26,7 @@ export function AboutUs() {
         </div>
 
         {/* Right Lottie */}
-        <motion.div
+        <m.div
           className="flex justify-center items-center h-[300px] lg:h-[400px] relative"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -38,11 +38,11 @@ export function AboutUs() {
             loop={true}
             className="w-full h-full max-w-[400px] drop-shadow-xl"
           />
-        </motion.div>
+        </m.div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -56,9 +56,9 @@ export function AboutUs() {
           <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-lg">
             Nos tomamos el tiempo de entender tu negocio antes de escribir una sola línea de código. Creemos que la mejor tecnología es la que resuelve problemas reales de manera simple y confiable.
           </p>
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -72,7 +72,7 @@ export function AboutUs() {
           <p className="text-teal-900/80 dark:text-teal-100/70 leading-relaxed text-lg">
             Desarrollamos <strong className="font-semibold text-teal-700 dark:text-teal-200">soluciones de automatización e IA</strong> adaptadas a tu realidad: sin costos innecesarios, sin promesas vacías. Solo herramientas que realmente funcionan para tu equipo.
           </p>
-        </motion.div>
+        </m.div>
       </div>
     </div>
   );
