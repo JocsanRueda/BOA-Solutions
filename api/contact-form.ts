@@ -24,7 +24,7 @@ export default async function handler(
       .from("Form_BOA")
       .insert([
         { 
-          nombre_formulario: "form-contact", 
+          form: "form-contact", 
           data: body 
         }
       ])
