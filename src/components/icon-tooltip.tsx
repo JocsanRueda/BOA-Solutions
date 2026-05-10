@@ -4,7 +4,7 @@ import { useState } from "react";
 import { iconItem } from "@/common/types/cards";
 import { createPortal } from "react-dom";
 
-export type IconTooltipProps = {
+export interface IconTooltipProps {
   item: iconItem;
   className?: string;
   classNameIcon?: string;
@@ -15,10 +15,10 @@ export function IconTooltip({item,className,classNameIcon,hoveredActive=true}:Ic
   const IconComponent = item.icon;
   const [hovered, setHovered] = useState(false)
 
-  const handleMouseEnter = () => setHovered(true);
-  const handleMouseLeave = () => setHovered(false);
-  const handleTouchStart = () => setHovered(true);
-  const handleTouchEnd = () => setHovered(false);
+  const handleMouseEnter = () => { setHovered(true); };
+  const handleMouseLeave = () => { setHovered(false); };
+  const handleTouchStart = () => { setHovered(true); };
+  const handleTouchEnd = () => { setHovered(false); };
   return<>
  
     <TooltipProvider >
@@ -28,7 +28,7 @@ export function IconTooltip({item,className,classNameIcon,hoveredActive=true}:Ic
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd} className={cn(className)}><IconComponent className={cn("p-1 rounded transition-colors ",hoveredActive && " hover:text-white dartk:hover:text-white",
             hovered && item.color,classNameIcon,
-          )} size={28} onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false) } /></TooltipTrigger>
+          )} size={28} onMouseEnter={()=>{ setHovered(true); }} onMouseLeave={()=>{ setHovered(false); } } /></TooltipTrigger>
         {
           hovered && createPortal(
             <TooltipContent  side="top"

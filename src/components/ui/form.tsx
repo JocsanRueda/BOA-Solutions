@@ -1,6 +1,6 @@
-import * as React from "react"
 import * as LabelPrimitive from "@radix-ui/react-label"
 import { Slot } from "@radix-ui/react-slot"
+import * as React from "react"
 import {
   Controller,
   FormProvider,
@@ -11,15 +11,15 @@ import {
   type FieldValues,
 } from "react-hook-form"
 
-import { cn } from "@/lib/utils"
 import { Label } from "@/components/ui/label"
+import { cn } from "@/lib/utils"
 
 const Form = FormProvider
 
-type FormFieldContextValue<
+interface FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = {
+> {
   name: TName
 }
 
@@ -46,7 +46,7 @@ const useFormField = () => {
   const { getFieldState } = useFormContext()
   const formState = useFormState({ name: fieldContext.name })
   const fieldState = getFieldState(fieldContext.name, formState)
-
+   
   if (!fieldContext) {
     throw new Error("useFormField should be used within <FormField>")
   }
@@ -63,7 +63,7 @@ const useFormField = () => {
   }
 }
 
-type FormItemContextValue = {
+interface FormItemContextValue {
   id: string
 }
 
@@ -111,7 +111,7 @@ function FormControl({ ...props }: React.ComponentProps<typeof Slot>) {
       id={formItemId}
       aria-describedby={
         !error
-          ? `${formDescriptionId}`
+          ? formDescriptionId
           : `${formDescriptionId} ${formMessageId}`
       }
       aria-invalid={!!error}
@@ -135,7 +135,8 @@ function FormDescription({ className, ...props }: React.ComponentProps<"p">) {
 
 function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
   const { error, formMessageId } = useFormField()
-  const body = error ? String(error?.message ?? "") : props.children
+   
+  const body = error ? (error.message ?? "") : props.children
 
   if (!body) {
     return null
@@ -154,12 +155,7 @@ function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
 }
 
 export {
-  useFormField,
-  Form,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormDescription,
-  FormMessage,
-  FormField,
+  Form, FormControl,
+  FormDescription, FormField, FormItem,
+  FormLabel, FormMessage, useFormField
 }

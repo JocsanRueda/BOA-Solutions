@@ -1,8 +1,8 @@
 import { StackItem } from "./stack.type";
 
-export type baseItemCard  = {
+export interface baseItemCard {
   id: string;
   title: string;
   description: string;
-  stack: StackItem[]; 
+  stack: StackItem[];
 };

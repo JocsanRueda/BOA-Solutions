@@ -10,5 +10,5 @@ export const sumaryData: experienceType[]  = data.map((item)=>{
     period: item.period,
     shortDescription: item.shortDescription,
     stack: item.stack
-  } as experienceType
+  }
 })

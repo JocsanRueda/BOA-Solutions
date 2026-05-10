@@ -1,7 +1,7 @@
 import { IconType } from "react-icons/lib";
 
-export type menuItemType = {
-  name: string; 
+export interface menuItemType {
+  name: string;
   url: string;
-  icon: IconType; 
+  icon: IconType;
 };

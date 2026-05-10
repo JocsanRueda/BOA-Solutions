@@ -2,9 +2,8 @@ import { routeEnum } from "@/common/enum/route.enum";
 import { Button } from "@/components/ui/button";
 import { useActiveSection } from "@/context/active-section.context";
 import { motion } from "framer-motion";
-import { Mail } from "lucide-react";
+import { ArrowRight, Mail } from "lucide-react";
 import { scroller } from "react-scroll";
-import { IconTooltip } from "./icon-tooltip";
 
 export default function HeroSection() {
   const { setActiveSection } = useActiveSection();
@@ -24,87 +23,69 @@ export default function HeroSection() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 dark:text-white">
-      <div className="max-w-2xl">
-        <p className="text-sm consolas-font dark:text-teal-300">
-          Tecnología al alcance de tu empresa
-          <motion.span
-            className="inline-block"
-            initial={{ opacity: 1 }}
-            animate={{ opacity: 0 }}
-            transition={{
-              repeat: Infinity,
-              repeatType: "reverse",
-              duration: 0.9,
-            }}
-          >
-            _
-          </motion.span>
-        </p>
+    <div className="min-h-screen flex items-center justify-center p-6 dark:text-white relative overflow-hidden">
+      {/* Background Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-teal-500/10 dark:bg-teal-400/5 blur-[120px] rounded-full pointer-events-none" />
 
-        <h1 className="text-5xl lg:text-8xl font-bold mt-2 tracking-tighter">BOA Solutions</h1>
+      <div className="max-w-4xl w-full mx-auto flex flex-col items-center text-center relative z-10">
 
-        <div className="text-balance">
-          <p className="lg:text-2xl mt-2 dark:text-gray-400">
-            Ayudamos a tu negocio a crecer con <span className="inline-block dark:text-teal-300">automatización práctica</span> y soluciones de IA a medida.
+        {/* Content */}
+        <motion.div
+          className="flex flex-col items-center gap-6"
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-teal-50 dark:bg-teal-500/10 border border-teal-100 dark:border-teal-500/20 w-fit">
+            <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" />
+            <p className="text-sm font-medium text-teal-700 dark:text-teal-300">
+              Tecnología al alcance de tu empresa
+            </p>
+          </div>
+
+          <h1 className="text-5xl lg:text-8xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-cyan-500 leading-[1.1] pb-2">
+            BOA Solutions
+          </h1>
+
+          <p className="text-lg lg:text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
+            Impulsa el crecimiento de tu negocio con soluciones de IA a medida y procesos optimizados, sin fricciones.
           </p>
-        </div>
 
-        {/* Estadísticas */}
-        <div className="mt-6 flex flex-wrap gap-6">
-          <div className="text-center">
-            <motion.p
-              className="text-3xl font-bold dark:text-teal-300"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1.5 }}
+          <div className="flex flex-wrap items-center gap-4 mt-4">
+            <Button
+              className="bg-teal-500 text-white font-semibold hover:bg-teal-600 dark:bg-teal-400 dark:text-black dark:hover:bg-teal-300 rounded-md px-8 py-6 text-lg transition-all shadow-lg hover:shadow-teal-500/25 flex items-center gap-2 group"
+              onClick={() => { handleClick(routeEnum.SERVICES); }}
+              type="button" 
             >
-              100%
-            </motion.p>
-            <p className="text-sm dark:text-gray-400">Dedicación al cliente</p>
-          </div>
+              Descubrir Servicios
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Button>
 
-          <div className="text-center">
-            <motion.p
-              className="text-3xl font-bold dark:text-teal-300"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1.5, delay: 0.2 }}
+            <button
+              onClick={() => { handleClick(routeEnum.CONTACT); }}
+              className="p-4 rounded-md bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300 transition-colors"
+              aria-label="Contáctanos"
             >
-              A medida
-            </motion.p>
-            <p className="text-sm dark:text-gray-400">Cada solución</p>
+              <Mail className="w-6 h-6" />
+            </button>
           </div>
 
-          <div className="text-center">
-            <motion.p
-              className="text-3xl font-bold dark:text-teal-300"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1.5, delay: 0.4 }}
-            >
-              Ágil
-            </motion.p>
-            <p className="text-sm dark:text-gray-400">Nuestro proceso</p>
+          <div className="flex flex-wrap items-center justify-center gap-8 mt-8 pt-8 border-t border-gray-200 dark:border-white/10 w-full max-w-2xl">
+            <div className="flex flex-col items-center">
+              <p className="text-3xl font-bold text-gray-900 dark:text-white">100%</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Dedicación al cliente</p>
+            </div>
+            <div className="flex flex-col items-center">
+              <p className="text-3xl font-bold text-gray-900 dark:text-white">A medida</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Cada solución</p>
+            </div>
+            <div className="flex flex-col items-center">
+              <p className="text-3xl font-bold text-gray-900 dark:text-white">Ágil</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Nuestro proceso</p>
+            </div>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="mt-6 flex flex-wrap gap-4">
-          <Button
-            className="bg-teal-400 text-black font-bold hover:bg-teal-500 dark:bg-teal-300 border-none px-8 py-6 text-lg"
-            onClick={() => handleClick(routeEnum.SERVICES)}
-            name="services-button"
-          >
-            Ver Servicios
-          </Button>
-
-          <div className="flex gap-1 items-center">
-
-            <a className="text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-teal-500 transition-colors cursor-pointer" onClick={() => handleClick(routeEnum.CONTACT)}>
-              <IconTooltip item={{ icon: Mail, name: "Contáctanos", color: "teal" }} classNameIcon="mt-1" hoveredActive={false} />
-            </a>
-          </div>
-        </div>
       </div>
     </div>
   );

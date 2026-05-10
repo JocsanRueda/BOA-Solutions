@@ -6,7 +6,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="w-full border-t border-white/5 bg-black/20 backdrop-blur-sm mt-20">
+    <footer className="w-full border-t border-gray-200 dark:border-white/10 bg-white/50 dark:bg-black/20 backdrop-blur-sm mt-20">
       <div className="max-w-6xl mx-auto px-5 py-12 flex flex-col md:flex-row justify-between items-center gap-6">
         <div className="flex flex-col items-center md:items-start gap-2">
           <div className="flex items-center gap-2">
@@ -42,7 +42,7 @@ export default function Footer() {
         </div>
       </div>
       
-      <div className="border-t border-white/5 py-6">
+      <div className="border-t border-gray-200 dark:border-white/10 py-6">
         <p className="text-center text-sm text-gray-500 dark:text-gray-500">
           © {currentYear} BOA Solutions. Todos los derechos reservados.
         </p>

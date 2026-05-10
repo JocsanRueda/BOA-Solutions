@@ -51,9 +51,9 @@ export function ContactPage() {
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
   const handleCopy = useCallback((text: string, field: string) => {
-    navigator.clipboard.writeText(text);
+    void navigator.clipboard.writeText(text);
     setCopiedField(field);
-    setTimeout(() => setCopiedField(null), 2000);
+    setTimeout(() => { setCopiedField(null); }, 2000);
   }, []);
 
   const onSubmit = useCallback((values: z.infer<typeof contactSchema>) => {
@@ -79,6 +79,7 @@ export function ContactPage() {
 
         form.reset();
       })
+       
       .catch((error) => {
 
         toast("Error al enviar el mensaje: " + error.message, {
@@ -115,7 +116,7 @@ export function ContactPage() {
                   <div className="relative flex items-center">
                     <Clipboard
                       className="w-5 h-5 cursor-pointer text-gray-600 dark:text-gray-200 hover:bg-blue-500 p-0.5 hover:text-white dark:hover:text-black rounded transition-colors"
-                      onClick={() => handleCopy(EMAIL, "email")}
+                      onClick={() => { handleCopy(EMAIL, "email"); }}
                     />
                     <AnimatePresence>
                       {copiedField === "email" && (
@@ -143,7 +144,7 @@ export function ContactPage() {
                   <div className="relative flex items-center">
                     <Clipboard
                       className="w-5 h-5 cursor-pointer text-gray-600 dark:text-gray-200 hover:bg-blue-500 p-0.5 hover:text-white dark:hover:text-black rounded transition-colors"
-                      onClick={() => handleCopy(PHONE_NUMBER, "phone")}
+                      onClick={() => { handleCopy(PHONE_NUMBER, "phone"); }}
                     />
                     <AnimatePresence>
                       {copiedField === "phone" && (
@@ -216,7 +217,7 @@ export function ContactPage() {
                     <FormItem className="my-3 ">
                       <FormLabel className='block text-sm text-gray-600 dark:text-gray-400 '>Mensaje</FormLabel>
                       <FormControl>
-                        <Textarea placeholder="Escribe tu mensaje aquí" {...field} className="min-h-[150px]" />
+                        <Textarea placeholder="Escribe tu mensaje aquí" {...field} className="min-h-37.5" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -234,6 +235,7 @@ export function ContactPage() {
               </Card>
             </form>
           </FormProvider>
+
         </div>
       </motion.div>
 

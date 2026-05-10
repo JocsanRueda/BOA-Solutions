@@ -1,8 +1,8 @@
 import { IconType } from "react-icons/lib";
 
-export type StackItem = {
-  icon: IconType; 
+export interface StackItem {
+  icon: IconType;
   name: string;
-  color: string; 
+  color: string;
   classNameIcon?: string;
 };

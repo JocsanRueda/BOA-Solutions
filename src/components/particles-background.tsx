@@ -14,6 +14,8 @@ export function ParticlesBackGround() {
       await loadSlim(engine);
     }).then(() => {
       setInit(true);
+    }).catch(() => {
+      setInit(true);
     });
   }, []);
 

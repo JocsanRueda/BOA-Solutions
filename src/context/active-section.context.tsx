@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 
-export type sectionType={
+export interface sectionType {
   activeSection: string;
   previousSection: string;
 }

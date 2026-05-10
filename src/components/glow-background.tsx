@@ -1,48 +1,56 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useTheme } from "./theme-provider";
 
 export default function GlowBackground() {
-  const [position, setPosition] = useState({ x: "50%", y: "50%" });
-  const {theme}=useTheme()
-  const gradient= theme==="dark" ? "rgba(0, 128, 255, 0.08)" : "rgba(0, 0, 0, 0.1)"
+  const { theme } = useTheme();
+  const gradient = theme === "dark" ? "rgba(0, 128, 255, 0.08)" : "rgba(0, 0, 0, 0.1)";
+  const glowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    let ticking = false;
+
+    const updatePosition = (clientX: number, clientY: number) => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (glowRef.current) {
+             
+            glowRef.current.style.background = `radial-gradient(circle at ${clientX}px ${clientY}px, ${gradient}, rgba(0, 0, 0, 0.1))`;
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
     const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth) * 100;
-      const y = (e.clientY / window.innerHeight) * 100;
-      setPosition({ x: `${x}%`, y: `${y}%` });
+      updatePosition(e.clientX, e.clientY);
     };
 
     const handleTouchMove = (e: TouchEvent) => {
       if (e.touches.length > 0) {
-        const touch = e.touches[0];
-        const x = (touch.clientX / window.innerWidth) * 100;
-        const y = (touch.clientY / window.innerHeight) * 100;
-        setPosition({ x: `${x}%`, y: `${y}%` });
+        updatePosition(e.touches[0].clientX, e.touches[0].clientY);
       }
-   
     };
 
-    window.addEventListener("touchmove", handleTouchMove);
-    window.addEventListener("mousemove", handleMouseMove);
+    // Use passive event listeners to prevent blocking the native mobile scroll
+    window.addEventListener("touchmove", handleTouchMove, { passive: true });
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
     // Cleanup event listener on component unmount
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("touchmove", handleTouchMove);
     };
-  }, []);
+  }, [gradient]);
 
   return (
     <div
-      className="fixed inset-0 w-full h-full pointer-events-none "
-  
+      ref={glowRef}
+      // w-full y h-[150vh] soluciona el problema de la barra de direcciones en móviles
+      className="fixed top-0 left-0 w-full h-[150vh] pointer-events-none"
       style={{
-    
-        background: `radial-gradient(circle at ${position.x} ${position.y}, ${gradient}, rgba(0, 0, 0, 0.1))`,
-        transition: "background 0.1s ease-out",
+        background: `radial-gradient(circle at 50vw 50vh, ${gradient}, rgba(0, 0, 0, 0.1))`,
         zIndex: 10,
-        
       }}
     />
   );
