@@ -19,16 +19,35 @@ const sampleFields: FormFieldConfig[] = [
 export default function FormPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (data: Record<string, string>) => {
+  const handleSubmit = async (data: Record<string, string>) => {
     setIsSubmitting(true);
-    // Simulate an API call
-    setTimeout(() => {
-      console.log("Form data received:", data);
-      toast.success("¡Formulario enviado con éxito!", {
-        description: "Nuestro equipo revisará tu solicitud y te contactará pronto.",
+    
+    try {
+      const response = await fetch("/api/contact-form", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
+
+      const result = (await response.json()) as { success?: boolean; error?: string };
+
+      if (response.ok && result.success) {
+        toast.success("¡Formulario enviado con éxito!", {
+          description: "Nuestro equipo revisará tu solicitud y te contactará pronto.",
+        });
+      } else {
+        throw new Error(result.error || "Error al enviar el formulario");
+      }
+    } catch (error) {
+      console.error("Form submission error:", error);
+      toast.error("Error al enviar", {
+        description: "Hubo un problema al enviar tu solicitud. Inténtalo de nuevo.",
+      });
+    } finally {
       setIsSubmitting(false);
-    }, 2000);
+    }
   };
 
   return (
