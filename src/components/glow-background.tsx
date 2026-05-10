@@ -13,7 +13,7 @@ export default function GlowBackground() {
       if (!ticking) {
         requestAnimationFrame(() => {
           if (glowRef.current) {
-             
+            
             glowRef.current.style.background = `radial-gradient(circle at ${clientX}px ${clientY}px, ${gradient}, rgba(0, 0, 0, 0.1))`;
           }
           ticking = false;

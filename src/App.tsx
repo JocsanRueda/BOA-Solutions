@@ -9,12 +9,13 @@ import { routeEnum } from "./common/enum/route.enum";
 import { ActiveSectionProvider } from "./context/active-section.context";
 import Loader from "@/components/loader";
 
-// Lazy-loaded components
-const HeroSection = lazy(() => import("@/components/hero-section"));
+import HeroSection from "@/components/hero-section";
+import { AnimationSection } from "@/components/animation-section";
+
+// Lazy-loaded components for below the fold
 const AboutUs = lazy(() => import("@/pages/about-us"));
 const Services = lazy(() => import("@/pages/services"));
-const ContactPage = lazy(() => import("./pages/contact"));
-const AnimationSection = lazy(() => import("./components/animation-section"));
+const ContactPage = lazy(() => import("@/pages/contact"));
 
 function App() {
   const sections = [
