@@ -25,7 +25,7 @@ export default async function handler(
       .insert([
         { 
           nombre_formulario: "form-contact", 
-          datos: body 
+          data: body 
         }
       ])
 
