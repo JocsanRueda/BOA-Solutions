@@ -1,7 +1,7 @@
 import { routeEnum } from "@/common/enum/route.enum";
 import { useActiveSection } from "@/context/active-section.context";
 import { motion } from "framer-motion";
-import { JSX, useEffect, Suspense } from "react";
+import { JSX, useEffect, Suspense, useState } from "react";
 import { Element, scroller } from "react-scroll";
 interface AnimationSectionProps {
   sections: {
@@ -14,8 +14,10 @@ export function AnimationSection({ sections }: AnimationSectionProps) {
 
   const { activeSection, } = useActiveSection()
 
-  useEffect(() => {
+  const [isMounted, setIsMounted] = useState(false);
 
+  useEffect(() => {
+    setIsMounted(true);
     const specialPages = Object.values(routeEnum)
 
     if (!specialPages.includes(activeSection.previousSection as routeEnum)) {
@@ -43,7 +45,11 @@ export function AnimationSection({ sections }: AnimationSectionProps) {
 
           >
             <Suspense fallback={<div className="min-h-screen w-full" />}>
-              {section.component}
+              {section.url === routeEnum.HOME || isMounted ? (
+                section.component
+              ) : (
+                <div className="min-h-screen w-full" />
+              )}
             </Suspense>
           </motion.div>
         </Element>

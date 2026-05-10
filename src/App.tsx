@@ -1,9 +1,9 @@
 import BlurBackground from "@/components/blur-background";
-import GlowBackground from "@/components/glow-background";
 import Layout from "@/components/layout";
-import ParticlesBackGround from "@/components/particles-background";
 import { ThemeProvider } from "@/components/theme-provider";
-import { lazy } from "react";
+import { lazy, Suspense } from "react";
+const ParticlesBackGround = lazy(() => import("@/components/particles-background"));
+const GlowBackground = lazy(() => import("@/components/glow-background"));
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { routeEnum } from "./common/enum/route.enum";
 import { ActiveSectionProvider } from "./context/active-section.context";
@@ -41,8 +41,10 @@ function App() {
               </Routes>
             </Layout>
           </Router>
-          <ParticlesBackGround />
-          <GlowBackground />
+          <Suspense fallback={null}>
+            <ParticlesBackGround />
+            <GlowBackground />
+          </Suspense>
         </ActiveSectionProvider>
       </ThemeProvider>
     </>
