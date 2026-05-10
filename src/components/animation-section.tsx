@@ -17,10 +17,30 @@ export function AnimationSection({ sections }: AnimationSectionProps) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => {
+    const handleUserInteraction = () => {
       setIsMounted(true);
-    }, 1500);
-    
+      ["scroll", "mousemove", "touchstart", "keydown"].forEach(evt => 
+        window.removeEventListener(evt, handleUserInteraction)
+      );
+    };
+
+    ["scroll", "mousemove", "touchstart", "keydown"].forEach(evt => 
+      window.addEventListener(evt, handleUserInteraction, { once: true, passive: true })
+    );
+
+    const timer = setTimeout(() => {
+      setIsMounted(true);
+    }, 5000);
+
+    return () => {
+      clearTimeout(timer);
+      ["scroll", "mousemove", "touchstart", "keydown"].forEach(evt => 
+        window.removeEventListener(evt, handleUserInteraction)
+      );
+    };
+  }, []);
+
+  useEffect(() => {
     const specialPages = Object.values(routeEnum)
 
     if (!specialPages.includes(activeSection.previousSection as routeEnum)) {
@@ -48,6 +68,7 @@ export function AnimationSection({ sections }: AnimationSectionProps) {
 
           >
             <Suspense fallback={<div className="min-h-screen w-full" />}>
+              {/* eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison */}
               {section.url === routeEnum.HOME || isMounted ? (
                 section.component
               ) : (
