@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
 import { routeEnum } from "@/common/enum/route.enum"
+import { useNavigate, useLocation } from "react-router-dom"
 import {
   Sidebar,
   SidebarContent,
@@ -13,56 +15,74 @@ import { useActiveSection } from "@/context/active-section.context"
 import { data } from "@/data/menu/menu-bar.data"
 import { cn } from "@/lib/utils"
 
-import { Link } from "react-scroll"
+import { Link as ScrollLink } from "react-scroll"
+
 export function AppSidebar() {
   const { activeSection, setActiveSection } = useActiveSection()
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const handleActiveSection = (sectionName: string) => {
-    const newActiveSection = {
+    setActiveSection({
       activeSection: sectionName,
       previousSection: activeSection.activeSection,
-    }
-    setActiveSection(newActiveSection);
+    });
   }
 
   const handleClick = (sectionName: string) => {
-    const newActiveSection = {
+    setActiveSection({
       activeSection: sectionName,
-      previousSection: window.location.pathname,
-    }
+      previousSection: location.pathname,
+    });
 
-    setActiveSection(newActiveSection);
-
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-    if (window.location.pathname !== routeEnum.HOME) {
-      window.history.back()
+    if (sectionName === routeEnum.FORM) {
+      navigate(routeEnum.FORM);
+    } else if (location.pathname !== routeEnum.HOME) {
+      navigate(routeEnum.HOME);
     }
   };
 
   return (
-    <Sidebar className="border-r border-dashed backdrop-blur-[2px]  z-10">
-
-      <SidebarContent className="flex flex-col  ">
-
+    <Sidebar className="border-r border-dashed backdrop-blur-[2px] z-10">
+      <SidebarContent className="flex flex-col">
         <SidebarGroup>
           <SidebarGroupLabel>Menu</SidebarGroupLabel>
-
           <SidebarGroupContent>
-
-            <SidebarMenu >
-              {data.map((item) => (
-                <SidebarMenuItem key={item.name}>
-                  <SidebarMenuButton asChild>
-                    <Link to={item.url} smooth={true} duration={500} onSetActive={() => { handleActiveSection(item.url); }} spy={true} className={cn(activeSection.activeSection === item.url ? "font-bold" : "font-normal")} onClick={() => { handleClick(item.url); }}
-                      offset={-35} >
-                      <item.icon />
-                      {item.name}
-
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-
+            <SidebarMenu>
+              {data.map((item) => {
+                const isFormPageLink = item.url === routeEnum.FORM;
+                const isActive = activeSection.activeSection === item.url;
+                
+                return (
+                  <SidebarMenuItem key={item.name}>
+                    <SidebarMenuButton asChild>
+                      {isFormPageLink || location.pathname !== routeEnum.HOME ? (
+                        <div 
+                          className={cn("cursor-pointer", isActive ? "font-bold" : "font-normal")}
+                          onClick={() => handleClick(item.url)}
+                        >
+                          <item.icon />
+                          {item.name}
+                        </div>
+                      ) : (
+                        <ScrollLink 
+                          to={item.url} 
+                          smooth={true} 
+                          duration={500} 
+                          onSetActive={() => handleActiveSection(item.url)} 
+                          spy={true} 
+                          className={cn("cursor-pointer", isActive ? "font-bold" : "font-normal")} 
+                          onClick={() => handleClick(item.url)}
+                          offset={-35} 
+                        >
+                          <item.icon />
+                          {item.name}
+                        </ScrollLink>
+                      )}
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

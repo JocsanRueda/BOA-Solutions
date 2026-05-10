@@ -64,7 +64,7 @@ export default function FormPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-32 px-4 sm:px-6 lg:px-8 relative z-10 w-full overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center py-32 px-4 sm:px-6 lg:px-8 relative w-full overflow-hidden">
       {/* Background glowing effects for the form */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/20 blur-[120px] rounded-full pointer-events-none opacity-50 dark:opacity-30"></div>
 

@@ -1,5 +1,5 @@
 import { routeEnum } from "@/common/enum/route.enum";
-import { Contact, House, SquareKanban, Sword } from "lucide-react";
+import { Contact, House, SquareKanban, Sword, ClipboardList } from "lucide-react";
 import { menuItemType } from "./types/menu.type";
 
 export const data : menuItemType[]=[
@@ -24,5 +24,9 @@ export const data : menuItemType[]=[
     url:routeEnum.CONTACT,
     icon:Contact,
   },
-  
+  {
+    name:"Consultas",
+    url:routeEnum.FORM,
+    icon:ClipboardList,
+  },
 ]
