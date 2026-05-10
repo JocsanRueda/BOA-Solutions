@@ -3,4 +3,5 @@ export enum routeEnum{
   SERVICES = "/services",
   CONTACT = "/contact",
   ABOUT_US = "/about-us",
+  FORM = "/form",
 }

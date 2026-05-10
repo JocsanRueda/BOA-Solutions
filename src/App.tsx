@@ -16,6 +16,7 @@ import HeroSection from "@/components/hero-section";
 const AboutUs = lazy(() => import("@/pages/about-us"));
 const Services = lazy(() => import("@/pages/services"));
 const ContactPage = lazy(() => import("@/pages/contact"));
+const FormPage = lazy(() => import("@/pages/form-page"));
 
 function App() {
   const sections = [
@@ -39,6 +40,14 @@ function App() {
                   <Route
                     path="/"
                     element={<AnimationSection sections={sections} />}
+                  />
+                  <Route 
+                    path={routeEnum.FORM} 
+                    element={
+                      <Suspense fallback={<div className="min-h-screen w-full" />}>
+                        <FormPage />
+                      </Suspense>
+                    } 
                   />
                 </Routes>
               </Layout>
