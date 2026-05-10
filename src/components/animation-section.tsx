@@ -17,7 +17,10 @@ export function AnimationSection({ sections }: AnimationSectionProps) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
+    setTimeout(() => {
+      setIsMounted(true);
+    }, 1500);
+    
     const specialPages = Object.values(routeEnum)
 
     if (!specialPages.includes(activeSection.previousSection as routeEnum)) {

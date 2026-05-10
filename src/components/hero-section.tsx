@@ -53,7 +53,7 @@ export default function HeroSection() {
 
           <div className="flex flex-wrap items-center gap-4 mt-4">
             <Button
-              className="bg-teal-500 text-white font-semibold hover:bg-teal-600 dark:bg-teal-400 dark:text-black dark:hover:bg-teal-300 rounded-md px-8 py-6 text-lg transition-all shadow-lg hover:shadow-teal-500/25 flex items-center gap-2 group"
+              className="bg-teal-500 text-white font-semibold hover:bg-teal-600 dark:bg-teal-400 dark:text-black dark:hover:bg-teal-300 rounded-md px-8 py-6 text-lg transition-[background-color,box-shadow] shadow-lg hover:shadow-teal-500/25 flex items-center gap-2 group"
               onClick={() => { handleClick(routeEnum.SERVICES); }}
               type="button" 
             >
@@ -63,7 +63,7 @@ export default function HeroSection() {
 
             <button
               onClick={() => { handleClick(routeEnum.CONTACT); }}
-              className="p-4 rounded-md bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300 transition-colors"
+              className="p-4 rounded-md bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300 transition-[background-color,opacity]"
               aria-label="Contáctanos"
             >
               <Mail className="w-6 h-6" />
