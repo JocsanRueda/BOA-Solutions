@@ -1,16 +1,15 @@
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import { Suspense, lazy } from "react";
 import BlurBackground from "@/components/blur-background";
 import GlowBackground from "@/components/glow-background";
 import Layout from "@/components/layout";
 import ParticlesBackGround from "@/components/particles-background";
 import { ThemeProvider } from "@/components/theme-provider";
+import { lazy } from "react";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { routeEnum } from "./common/enum/route.enum";
 import { ActiveSectionProvider } from "./context/active-section.context";
-import Loader from "@/components/loader";
 
-import HeroSection from "@/components/hero-section";
 import { AnimationSection } from "@/components/animation-section";
+import HeroSection from "@/components/hero-section";
 
 // Lazy-loaded components for below the fold
 const AboutUs = lazy(() => import("@/pages/about-us"));
@@ -34,14 +33,12 @@ function App() {
 
             <Layout>
 
-              <Suspense fallback={<Loader />}>
-                <Routes>
-                  <Route
-                    path="/"
-                    element={<AnimationSection sections={sections} />}
-                  />
-                </Routes>
-              </Suspense>
+              <Routes>
+                <Route
+                  path="/"
+                  element={<AnimationSection sections={sections} />}
+                />
+              </Routes>
             </Layout>
           </Router>
           <ParticlesBackGround />

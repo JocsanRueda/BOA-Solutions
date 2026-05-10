@@ -35,7 +35,7 @@ export default function Footer() {
             smooth={true} 
             duration={500}
             offset={35}
-            className="text-gray-400 hover:text-teal-500 transition-colors cursor-pointer"
+            className="text-gray-400 hover:text-teal-500 transition-opacity hover:opacity-80 cursor-pointer"
           >
             <Mail className="w-5 h-5" />
           </Link>
