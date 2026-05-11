@@ -82,7 +82,10 @@ const commonParticlesConfig = (bgColor: string, pColor: string, lColor: string):
         options: {
           particles: {
             number: {
-              value: 60,
+              value: 40,
+              limit: {
+                value: 60
+              }
             },
           },
         },

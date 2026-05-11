@@ -25,7 +25,7 @@ export default function HeroSection() {
   return (
     <div className="min-h-screen flex items-center justify-center p-6 dark:text-white relative overflow-hidden">
       {/* Background Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-teal-500/10 dark:bg-teal-400/5 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(20,184,166,0.15)_0%,rgba(20,184,166,0)_70%)] dark:bg-[radial-gradient(circle,rgba(45,212,191,0.08)_0%,rgba(45,212,191,0)_70%)] blur-[120px] rounded-full pointer-events-none" />
 
       <div className="max-w-4xl w-full mx-auto flex flex-col items-center text-center relative z-10">
 
