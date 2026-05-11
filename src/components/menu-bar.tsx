@@ -1,20 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
-import { useCallback } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { routeEnum } from "@/common/enum/route.enum";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList
-} from "@/components/ui/navigation-menu"
-import { Switch } from "@/components/ui/switch"
-import { useTheme } from "./theme-provider"
-import { Link as ScrollLink } from "react-scroll"
-import { data } from "@/data/menu/menu-bar.data"
-import { SidebarTrigger } from "./ui/sidebar"
-import { useActiveSection } from "@/context/active-section.context"
-import { cn } from "@/lib/utils"
-import { routeEnum } from "@/common/enum/route.enum"
+} from "@/components/ui/navigation-menu";
+import { Switch } from "@/components/ui/switch";
+import { useActiveSection } from "@/context/active-section.context";
+import { data } from "@/data/menu/menu-bar.data";
+import { cn } from "@/lib/utils";
+import { useCallback } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Link as ScrollLink } from "react-scroll";
+import { useTheme } from "./theme-provider";
+import { SidebarTrigger } from "./ui/sidebar";
 
 export function MenuBar() {
   const { setTheme, theme } = useTheme()
