@@ -7,15 +7,37 @@ import { CheckCircle, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const sampleFields: FormFieldConfig[] = [
+  // Page 1: Personal Info
   { id: "name", label: "Nombre Completo", type: "text", placeholder: "Ej. Juan Pérez", required: true },
   { id: "email", label: "Correo Electrónico", type: "email", placeholder: "juan@ejemplo.com", required: true },
+  { id: "phone", label: "Teléfono", type: "text", placeholder: "+1 234 567 8900", required: true },
+  { id: "country", label: "País / Ciudad", type: "text", placeholder: "Ej. México, CDMX", required: false },
+  
+  // Page 2: Project Details
+  { id: "company", label: "Nombre de la Empresa", type: "text", placeholder: "Tu Empresa S.A.", required: false },
   { id: "service", label: "Servicio de Interés", type: "select", options: [
     { label: "Desarrollo Web", value: "web" },
     { label: "Aplicación Móvil", value: "mobile" },
     { label: "Diseño UI/UX", value: "design" },
+    { label: "Consultoría IT", value: "consulting" },
     { label: "Otro", value: "other" },
   ], required: true },
-  { id: "message", label: "Mensaje", type: "textarea", placeholder: "Cuéntanos más sobre tu proyecto...", required: true }
+  { id: "budget", label: "Presupuesto Estimado", type: "select", options: [
+    { label: "Menos de $1,000 USD", value: "tier1" },
+    { label: "$1,000 - $5,000 USD", value: "tier2" },
+    { label: "$5,000 - $10,000 USD", value: "tier3" },
+    { label: "Más de $10,000 USD", value: "tier4" },
+  ], required: true },
+  { id: "timeline", label: "Tiempo Estimado (Deadline)", type: "select", options: [
+    { label: "Lo antes posible", value: "asap" },
+    { label: "1 a 3 meses", value: "short" },
+    { label: "3 a 6 meses", value: "medium" },
+    { label: "Sin prisa", value: "flexible" },
+  ], required: true },
+  
+  // Page 3: Additional Details
+  { id: "message", label: "Cuéntanos más sobre tu proyecto", type: "textarea", placeholder: "Describe los objetivos principales y qué esperas lograr...", required: true },
+  { id: "reference", label: "¿Cómo nos conociste?", type: "text", placeholder: "Ej. Google, LinkedIn, Referencia...", required: false }
 ];
 
 export default function FormPage() {

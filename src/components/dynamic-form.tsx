@@ -14,24 +14,32 @@ import {
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { m, AnimatePresence, Variants } from "framer-motion";
-import { Loader2, Send } from "lucide-react";
+import { Loader2, Send, ChevronRight, ChevronLeft } from "lucide-react";
+import { useState } from "react";
 
 interface DynamicFormProps {
   fields: FormFieldConfig[];
   onSubmitData: (data: Record<string, string>) => void;
   isSubmitting: boolean;
   submitText?: string;
+  fieldsPerPage?: number;
 }
 
 const formVariants: Variants = {
-  hidden: { opacity: 0 },
+  hidden: { opacity: 0, x: 20 },
   visible: {
     opacity: 1,
+    x: 0,
     transition: {
       staggerChildren: 0.1,
       delayChildren: 0.1,
     },
   },
+  exit: {
+    opacity: 0,
+    x: -20,
+    transition: { duration: 0.2 }
+  }
 };
 
 const itemVariants: Variants = {
@@ -39,21 +47,21 @@ const itemVariants: Variants = {
   visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } },
 };
 
-export function DynamicForm({ fields, onSubmitData, isSubmitting, submitText = "Enviar" }: DynamicFormProps) {
+export function DynamicForm({ fields, onSubmitData, isSubmitting, submitText = "Enviar", fieldsPerPage = 4 }: DynamicFormProps) {
+  const [currentPage, setCurrentPage] = useState(0);
+  const totalPages = Math.ceil(fields.length / fieldsPerPage);
+
   // 1. Generar el esquema Zod dinámicamente según el array de campos
   const generateSchema = () => {
     const schemaShape: Record<string, z.ZodTypeAny> = {};
 
     fields.forEach((field) => {
-      // start from a Zod string
       let base = z.string({ required_error: "Este campo es requerido" });
 
-      // apply specific type validations first
       if (field.type === "email") {
         base = base.email({ message: "Ingresa un correo válido" });
       }
 
-      // apply required/optional
       const fieldSchema: z.ZodTypeAny = field.required ? base.min(1, { message: "Este campo no puede estar vacío" }) : base.optional();
 
       schemaShape[field.id] = fieldSchema;
@@ -69,10 +77,26 @@ export function DynamicForm({ fields, onSubmitData, isSubmitting, submitText = "
   const form = useForm<DynamicFormValues>({
     resolver: zodResolver(dynamicSchema),
     defaultValues: fields.reduce<Record<string, string>>((acc, field) => {
-      acc[field.id] = ""; // Inicializa todos los campos en vacío
+      acc[field.id] = "";
       return acc;
     }, {}),
   });
+
+  const currentFields = fields.slice(currentPage * fieldsPerPage, (currentPage + 1) * fieldsPerPage);
+
+  const handleNext = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    const fieldsToValidate = currentFields.map(f => f.id);
+    const isValid = await form.trigger(fieldsToValidate);
+    if (isValid) {
+      setCurrentPage(prev => prev + 1);
+    }
+  };
+
+  const handlePrev = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setCurrentPage(prev => prev - 1);
+  };
 
   // 3. Renderizado dinámico de los inputs
   const renderInput = (fieldConfig: FormFieldConfig, fieldProps: any) => {
@@ -88,7 +112,6 @@ export function DynamicForm({ fields, onSubmitData, isSubmitting, submitText = "
         />
       );
     case "select":
-      // Usamos un select nativo estilizado con las mismas clases de shadcn/ui
       return (
         <div className="relative">
           <select
@@ -123,66 +146,108 @@ export function DynamicForm({ fields, onSubmitData, isSubmitting, submitText = "
 
   return (
     <Form {...form}>
-      <m.form 
+      <form 
         onSubmit={(e) => { void form.handleSubmit(onSubmitData)(e); }} 
-        className="space-y-6"
-        variants={formVariants}
-        initial="hidden"
-        animate="visible"
+        className="space-y-6 overflow-hidden"
       >
-        {fields.map((fieldConfig) => (
-          <m.div key={fieldConfig.id} variants={itemVariants}>
-            <FormField
-              control={form.control}
-              name={fieldConfig.id}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-medium">
-                    {fieldConfig.label} {fieldConfig.required && <span className="text-destructive ml-1">*</span>}
-                  </FormLabel>
-                  <FormControl>
-                    {renderInput(fieldConfig, field)}
-                  </FormControl>
-                  <AnimatePresence mode="wait">
-                    {form.formState.errors[fieldConfig.id] && (
-                      <m.div
-                        initial={{ opacity: 0, height: 0, y: -5 }}
-                        animate={{ opacity: 1, height: "auto", y: 0 }}
-                        exit={{ opacity: 0, height: 0, y: -5 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <FormMessage />
-                      </m.div>
-                    )}
-                  </AnimatePresence>
-                </FormItem>
-              )}
-            />
-          </m.div>
-        ))}
-
-        <m.div variants={itemVariants} className="pt-2">
-          <Button 
-            type="submit" 
-            className="w-full h-11 text-base font-semibold group relative overflow-hidden transition-all hover:shadow-[0_0_20px_rgba(var(--primary),0.3)]" 
-            disabled={isSubmitting}
+        <AnimatePresence mode="wait">
+          <m.div 
+            key={currentPage}
+            variants={formVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="space-y-6"
           >
-            <span className="relative z-10 flex items-center justify-center gap-2">
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Procesando...
-                </>
-              ) : (
-                <>
-                  {submitText}
-                  <Send className="w-4 h-4 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" />
-                </>
-              )}
-            </span>
-          </Button>
+            {currentFields.map((fieldConfig, index) => (
+              <m.div key={`${fieldConfig.id}-${index}`} variants={itemVariants}>
+                <FormField
+                  control={form.control}
+                  name={fieldConfig.id}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium">
+                        {fieldConfig.label} {fieldConfig.required && <span className="text-destructive ml-1">*</span>}
+                      </FormLabel>
+                      <FormControl>
+                        {renderInput(fieldConfig, field)}
+                      </FormControl>
+                      <AnimatePresence mode="wait">
+                        {form.formState.errors[fieldConfig.id] && (
+                          <m.div
+                            initial={{ opacity: 0, height: 0, y: -5 }}
+                            animate={{ opacity: 1, height: "auto", y: 0 }}
+                            exit={{ opacity: 0, height: 0, y: -5 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <FormMessage />
+                          </m.div>
+                        )}
+                      </AnimatePresence>
+                    </FormItem>
+                  )}
+                />
+              </m.div>
+            ))}
+          </m.div>
+        </AnimatePresence>
+
+        <m.div variants={itemVariants} className="pt-4 flex gap-3">
+          {currentPage > 0 && (
+            <Button 
+              type="button" 
+              variant="outline"
+              onClick={handlePrev}
+              className="flex-1 h-11 text-base font-semibold transition-all hover:bg-secondary" 
+            >
+              <ChevronLeft className="w-4 h-4 mr-2" />
+              Atrás
+            </Button>
+          )}
+
+          {currentPage < totalPages - 1 ? (
+            <Button 
+              type="button" 
+              onClick={handleNext}
+              className="flex-1 h-11 text-base font-semibold transition-all" 
+            >
+              Siguiente
+              <ChevronRight className="w-4 h-4 ml-2" />
+            </Button>
+          ) : (
+            <Button 
+              type="submit" 
+              className="flex-1 h-11 text-base font-semibold group relative overflow-hidden transition-all hover:shadow-[0_0_20px_rgba(var(--primary),0.3)]" 
+              disabled={isSubmitting}
+            >
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Enviando...
+                  </>
+                ) : (
+                  <>
+                    {submitText}
+                    <Send className="w-4 h-4 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" />
+                  </>
+                )}
+              </span>
+            </Button>
+          )}
         </m.div>
-      </m.form>
+
+        {totalPages > 1 && (
+          <m.div variants={itemVariants} className="flex justify-center gap-2 pt-2">
+            {Array.from({ length: totalPages }).map((_, idx) => (
+              <div 
+                key={idx} 
+                className={`h-2 rounded-full transition-all duration-300 ${idx === currentPage ? "w-8 bg-primary" : "w-2 bg-primary/20"}`}
+              />
+            ))}
+          </m.div>
+        )}
+      </form>
     </Form>
   );
 }

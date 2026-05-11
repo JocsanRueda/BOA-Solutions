@@ -2,7 +2,8 @@ import { routeEnum } from "@/common/enum/route.enum";
 import { useActiveSection } from "@/context/active-section.context";
 import { m } from "framer-motion";
 import { JSX, useEffect, Suspense, useState } from "react";
-import { Element, scroller } from "react-scroll";
+import { Element, scroller, Link as ScrollLink } from "react-scroll";
+
 interface AnimationSectionProps {
   sections: {
     url: string;
@@ -12,7 +13,7 @@ interface AnimationSectionProps {
 
 export function AnimationSection({ sections }: AnimationSectionProps) {
 
-  const { activeSection, } = useActiveSection()
+  const { activeSection, setActiveSection } = useActiveSection()
 
   const [isMounted, setIsMounted] = useState(false);
 
@@ -58,6 +59,25 @@ export function AnimationSection({ sections }: AnimationSectionProps) {
 
   return (
     <div>
+      {/* Rastreadores globales invisibles: garantizan que setActiveSection funcione en móviles */}
+      <div className="fixed top-0 left-0 w-0 h-0 overflow-hidden pointer-events-none opacity-0" aria-hidden="true">
+        {sections.map((section) => (
+          <ScrollLink
+            key={`tracker-${section.url}`}
+            to={section.url}
+            spy={true}
+            onSetActive={() => {
+              setActiveSection({
+                activeSection: section.url,
+                previousSection: activeSection.activeSection,
+              });
+            }}
+            offset={-100}
+            containerId=""
+          />
+        ))}
+      </div>
+
       {sections.map((section) => (
         <Element name={section.url} key={section.url}>
           <m.div

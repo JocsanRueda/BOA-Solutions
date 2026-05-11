@@ -13,7 +13,6 @@ export default function GlowBackground() {
       if (!ticking) {
         requestAnimationFrame(() => {
           if (glowRef.current) {
-            
             glowRef.current.style.background = `radial-gradient(circle at ${clientX}px ${clientY}px, ${gradient}, rgba(0, 0, 0, 0.1))`;
           }
           ticking = false;
@@ -26,31 +25,22 @@ export default function GlowBackground() {
       updatePosition(e.clientX, e.clientY);
     };
 
-    const handleTouchMove = (e: TouchEvent) => {
-      if (e.touches.length > 0) {
-        updatePosition(e.touches[0].clientX, e.touches[0].clientY);
-      }
-    };
-
-    // Use passive event listeners to prevent blocking the native mobile scroll
-    window.addEventListener("touchmove", handleTouchMove, { passive: true });
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
-    // Cleanup event listener on component unmount
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("touchmove", handleTouchMove);
     };
   }, [gradient]);
 
   return (
     <div
       ref={glowRef}
-      // w-full y h-[150vh] soluciona el problema de la barra de direcciones en móviles
-      className="fixed top-0 left-0 w-full h-[150vh] pointer-events-none"
+      // Usamos inset-0 para asegurar que siempre cubra exactamente la pantalla visible (viewport)
+      // sin importar si aparece o desaparece la barra de direcciones en móviles.
+      className="fixed inset-0 pointer-events-none transition-opacity duration-300"
       style={{
         background: `radial-gradient(circle at 50vw 50vh, ${gradient}, rgba(0, 0, 0, 0.1))`,
-        zIndex: 10,
+        zIndex: 1,
       }}
     />
   );
