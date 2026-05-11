@@ -44,7 +44,7 @@ export function MenuBar() {
   }, [setActiveSection, location.pathname, navigate]);
  
   return (
-    <NavigationMenu className="mb-0.5 flex flex-row justify-between border-b border-dashed backdrop-blur-[5px] max-w-none px-2 fixed z-100 w-full py-0.5">
+    <NavigationMenu className="mb-0.5 flex flex-row justify-between border-b border-dashed backdrop-blur-[5px] max-w-none px-2 fixed z-50 w-full py-0.5">
       <NavigationMenuLink className="block sm:hidden">
         <SidebarTrigger/>
       </NavigationMenuLink>

@@ -6,10 +6,10 @@ import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar"
 import { useActiveSection } from "@/context/active-section.context"
 import { data } from "@/data/menu/menu-bar.data"
@@ -17,8 +17,11 @@ import { cn } from "@/lib/utils"
 
 import { Link as ScrollLink } from "react-scroll"
 
+import {ArrowLeft } from "lucide-react"
+
 export function AppSidebar() {
   const { activeSection, setActiveSection } = useActiveSection()
+  const { toggleSidebar } = useSidebar()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -43,12 +46,22 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar className="border-r border-dashed backdrop-blur-[2px] z-10">
+    <Sidebar className="border-r border-dashed backdrop-blur-[2px] z-100 ">
       <SidebarContent className="flex flex-col">
         <SidebarGroup>
-          <SidebarGroupLabel>Menu</SidebarGroupLabel>
+       
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="mt-3">
+
+              <SidebarMenuItem className="" >
+                <SidebarMenuButton onClick={toggleSidebar}>
+                  <div className="flex flex-row items-center gap-1">
+                    <ArrowLeft className="scale-85 -ml-1" onClick={(e) => e.stopPropagation()} />
+                    Volver
+                  </div>
+                  
+                </SidebarMenuButton>
+              </SidebarMenuItem>
               {data.map((item) => {
                 const isFormPageLink = item.url === routeEnum.FORM;
                 const isActive = activeSection.activeSection === item.url;

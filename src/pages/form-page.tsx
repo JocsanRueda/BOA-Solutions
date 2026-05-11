@@ -7,37 +7,62 @@ import { CheckCircle, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const sampleFields: FormFieldConfig[] = [
-  // Page 1: Personal Info
-  { id: "name", label: "Nombre Completo", type: "text", placeholder: "Ej. Juan Pérez", required: true },
-  { id: "email", label: "Correo Electrónico", type: "email", placeholder: "juan@ejemplo.com", required: true },
-  { id: "phone", label: "Teléfono", type: "text", placeholder: "+1 234 567 8900", required: true },
-  { id: "country", label: "País / Ciudad", type: "text", placeholder: "Ej. México, CDMX", required: false },
+  // Paso 1: Datos de Contacto
+  { id: "business_name", label: "Nombre de su negocio", type: "text", placeholder: "Ej. Mi Tienda S.A.", required: true },
+  { id: "contact_name", label: "Nombre de la persona de contacto", type: "text", placeholder: "Ej. Juan Pérez", required: true },
+  { id: "phone", label: "Número de WhatsApp o teléfono", type: "text", placeholder: "+1 234 567 8900", required: true },
+  { id: "email", label: "Correo Electrónico (Opcional)", type: "email", placeholder: "hola@ejemplo.com", required: false },
   
-  // Page 2: Project Details
-  { id: "company", label: "Nombre de la Empresa", type: "text", placeholder: "Tu Empresa S.A.", required: false },
-  { id: "service", label: "Servicio de Interés", type: "select", options: [
-    { label: "Desarrollo Web", value: "web" },
-    { label: "Aplicación Móvil", value: "mobile" },
-    { label: "Diseño UI/UX", value: "design" },
-    { label: "Consultoría IT", value: "consulting" },
-    { label: "Otro", value: "other" },
+  // Paso 2: Perfil del Negocio
+  { id: "business_type", label: "¿Qué tipo de negocio tienes?", type: "select", options: [
+    { label: "Tienda de ropa", value: "ropa" },
+    { label: "Restaurante", value: "restaurante" },
+    { label: "Clínica", value: "clinica" },
+    { label: "Salón de belleza", value: "belleza" },
+    { label: "Venta de productos", value: "productos" },
+    { label: "Servicios profesionales", value: "servicios" },
+    { label: "Otros", value: "otros" },
   ], required: true },
-  { id: "budget", label: "Presupuesto Estimado", type: "select", options: [
-    { label: "Menos de $1,000 USD", value: "tier1" },
-    { label: "$1,000 - $5,000 USD", value: "tier2" },
-    { label: "$5,000 - $10,000 USD", value: "tier3" },
-    { label: "Más de $10,000 USD", value: "tier4" },
+  { id: "main_channel", label: "¿En qué red o medio recibes más mensajes?", type: "select", options: [
+    { label: "WhatsApp", value: "whatsapp" },
+    { label: "Instagram", value: "instagram" },
+    { label: "Facebook Messenger", value: "messenger" },
+    { label: "Página Web", value: "web" },
+    { label: "Varios de los anteriores", value: "varios" },
   ], required: true },
-  { id: "timeline", label: "Tiempo Estimado (Deadline)", type: "select", options: [
-    { label: "Lo antes posible", value: "asap" },
-    { label: "1 a 3 meses", value: "short" },
-    { label: "3 a 6 meses", value: "medium" },
-    { label: "Sin prisa", value: "flexible" },
+  { id: "frequent_questions", label: "¿Qué preguntas te hacen más tus clientes?", type: "select", options: [
+    { label: "Precios de productos o servicios", value: "precios" },
+    { label: "Disponibilidad de productos", value: "disponibilidad" },
+    { label: "Catálogo", value: "catalogo" },
+    { label: "Horarios de atención", value: "horarios" },
+    { label: "Ubicación del negocio", value: "ubicacion" },
+    { label: "Cómo comprar o hacer pedidos", value: "comprar" },
+    { label: "Agendar citas", value: "citas" },
+    { label: "Otras consultas", value: "otras" },
   ], required: true },
-  
-  // Page 3: Additional Details
-  { id: "message", label: "Cuéntanos más sobre tu proyecto", type: "textarea", placeholder: "Describe los objetivos principales y qué esperas lograr...", required: true },
-  { id: "reference", label: "¿Cómo nos conociste?", type: "text", placeholder: "Ej. Google, LinkedIn, Referencia...", required: false }
+
+  // Paso 3: Objetivos de Automatización
+  { id: "has_catalog", label: "¿Tienes un catálogo digital de tus productos/servicios?", type: "select", options: [
+    { label: "Sí", value: "si" },
+    { label: "No", value: "no" },
+    { label: "Estoy trabajando en uno", value: "en_proceso" },
+  ], required: true },
+  { id: "automation_goal", label: "¿Cuál es tu principal objetivo al automatizar?", type: "select", options: [
+    { label: "Responder a clientes más rápido", value: "rapidez" },
+    { label: "No tener que contestar mensajes todo el día", value: "tiempo" },
+    { label: "Mejorar las ventas", value: "ventas" },
+    { label: "Dar información automática", value: "informacion" },
+    { label: "Organizar mejor los pedidos o consultas", value: "organizacion" },
+    { label: "Mejorar la atención al cliente", value: "atencion" },
+  ], required: true },
+  { id: "try_system", label: "¿Te gustaría probar un sistema de respuesta automática?", type: "select", options: [
+    { label: "Sí", value: "si" },
+    { label: "No", value: "no" },
+    { label: "Tal vez", value: "tal_vez" },
+  ], required: true },
+
+  // Paso 4: Información Extra
+  { id: "comments", label: "¿Hay algún otro detalle que quieras comentarnos? (Opcional)", type: "textarea", placeholder: "Escribe aquí cualquier necesidad específica o duda que tengas sobre datos o automatización...", required: false }
 ];
 
 export default function FormPage() {
