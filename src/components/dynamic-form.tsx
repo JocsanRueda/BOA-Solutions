@@ -205,7 +205,7 @@ export function DynamicForm({ fields, onSubmitData, isSubmitting, submitText = "
     <Form {...form}>
       <form 
         onSubmit={(e) => { void form.handleSubmit(onSubmitData)(e); }} 
-        className="space-y-6 overflow-hidden px-1"
+        className="space-y-6 overflow-hidden px-0.5"
       >
         <AnimatePresence mode="wait">
           <m.div 
