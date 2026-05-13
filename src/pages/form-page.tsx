@@ -1,69 +1,10 @@
-import { useState } from "react";
 import { DynamicForm } from "@/components/dynamic-form";
-import { FormFieldConfig } from "@/types/form.type";
-import { toast } from "sonner";
-import { m, AnimatePresence } from "framer-motion";
-import { CheckCircle, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const sampleFields: FormFieldConfig[] = [
-  // Paso 1: Datos de Contacto
-  { id: "business_name", label: "Nombre de su negocio", type: "text", placeholder: "Ej. Mi Tienda S.A.", required: true },
-  { id: "contact_name", label: "Nombre de la persona de contacto", type: "text", placeholder: "Ej. Juan Pérez", required: true },
-  { id: "phone", label: "Número de WhatsApp o teléfono", type: "text", placeholder: "+1 234 567 8900", required: true },
-  { id: "email", label: "Correo Electrónico (Opcional)", type: "email", placeholder: "hola@ejemplo.com", required: false },
-  
-  // Paso 2: Perfil del Negocio
-  { id: "business_type", label: "¿Qué tipo de negocio tienes?", type: "select", options: [
-    { label: "Tienda de ropa", value: "ropa" },
-    { label: "Restaurante", value: "restaurante" },
-    { label: "Clínica", value: "clinica" },
-    { label: "Salón de belleza", value: "belleza" },
-    { label: "Venta de productos", value: "productos" },
-    { label: "Servicios profesionales", value: "servicios" },
-    { label: "Otros", value: "otros" },
-  ], required: true },
-  { id: "main_channel", label: "¿En qué red o medio recibes más mensajes?", type: "select", options: [
-    { label: "WhatsApp", value: "whatsapp" },
-    { label: "Instagram", value: "instagram" },
-    { label: "Facebook Messenger", value: "messenger" },
-    { label: "Página Web", value: "web" },
-    { label: "Varios de los anteriores", value: "varios" },
-  ], required: true },
-  { id: "frequent_questions", label: "¿Qué preguntas te hacen más tus clientes?", type: "select", options: [
-    { label: "Precios de productos o servicios", value: "precios" },
-    { label: "Disponibilidad de productos", value: "disponibilidad" },
-    { label: "Catálogo", value: "catalogo" },
-    { label: "Horarios de atención", value: "horarios" },
-    { label: "Ubicación del negocio", value: "ubicacion" },
-    { label: "Cómo comprar o hacer pedidos", value: "comprar" },
-    { label: "Agendar citas", value: "citas" },
-    { label: "Otras consultas", value: "otras" },
-  ], required: true },
-
-  // Paso 3: Objetivos de Automatización
-  { id: "has_catalog", label: "¿Tienes un catálogo digital de tus productos/servicios?", type: "select", options: [
-    { label: "Sí", value: "si" },
-    { label: "No", value: "no" },
-    { label: "Estoy trabajando en uno", value: "en_proceso" },
-  ], required: true },
-  { id: "automation_goal", label: "¿Cuál es tu principal objetivo al automatizar?", type: "select", options: [
-    { label: "Responder a clientes más rápido", value: "rapidez" },
-    { label: "No tener que contestar mensajes todo el día", value: "tiempo" },
-    { label: "Mejorar las ventas", value: "ventas" },
-    { label: "Dar información automática", value: "informacion" },
-    { label: "Organizar mejor los pedidos o consultas", value: "organizacion" },
-    { label: "Mejorar la atención al cliente", value: "atencion" },
-  ], required: true },
-  { id: "try_system", label: "¿Te gustaría probar un sistema de respuesta automática?", type: "select", options: [
-    { label: "Sí", value: "si" },
-    { label: "No", value: "no" },
-    { label: "Tal vez", value: "tal_vez" },
-  ], required: true },
-
-  // Paso 4: Información Extra
-  { id: "comments", label: "¿Hay algún otro detalle que quieras comentarnos? (Opcional)", type: "textarea", placeholder: "Escribe aquí cualquier necesidad específica o duda que tengas sobre datos o automatización...", required: false }
-];
+import { form_questions } from "@/constants/form-question";
+import { AnimatePresence, m } from "framer-motion";
+import { CheckCircle, XCircle } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export default function FormPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -71,9 +12,12 @@ export default function FormPage() {
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = async (data: Record<string, string>) => {
+  const handleSubmit = async (data: Record<string, any>) => {
     setIsSubmitting(true);
     setIsError(false);
+    
+    // Log the data for debugging purposes
+    console.log("Datos del formulario a enviar:", data);
     
     try {
       const response = await fetch("/api/contact-form", {
@@ -152,7 +96,7 @@ export default function FormPage() {
 
               <div className="mt-10">
                 <DynamicForm 
-                  fields={sampleFields} 
+                  fields={form_questions} 
                   onSubmitData={handleSubmit} 
                   isSubmitting={isSubmitting} 
                   submitText="Enviar Solicitud"

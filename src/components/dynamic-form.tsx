@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, ControllerRenderProps } from "react-hook-form";
 import { z } from "zod";
 import { FormFieldConfig } from "../types/form.type";
 import { Button } from "./ui/button";
@@ -14,12 +14,12 @@ import {
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { m, AnimatePresence, Variants } from "framer-motion";
-import { Loader2, Send, ChevronRight, ChevronLeft } from "lucide-react";
+import { Loader2, Send, ChevronRight, ChevronLeft, Check } from "lucide-react";
 import { useState } from "react";
 
 interface DynamicFormProps {
   fields: FormFieldConfig[];
-  onSubmitData: (data: Record<string, string>) => void;
+  onSubmitData: (data: Record<string, any>) => void;
   isSubmitting: boolean;
   submitText?: string;
   fieldsPerPage?: number;
@@ -56,13 +56,31 @@ export function DynamicForm({ fields, onSubmitData, isSubmitting, submitText = "
     const schemaShape: Record<string, z.ZodTypeAny> = {};
 
     fields.forEach((field) => {
+      if (field.type === "multiselect") {
+        let arrayBase = z.array(z.string());
+        if (field.required) {
+          arrayBase = arrayBase.min(1, { message: "Selecciona al menos una opción" });
+        }
+        schemaShape[field.id] = arrayBase;
+        return;
+      }
+
       let base = z.string({ required_error: "Este campo es requerido" });
 
       if (field.type === "email") {
         base = base.email({ message: "Ingresa un correo válido" });
       }
 
-      const fieldSchema: z.ZodTypeAny = field.required ? base.min(1, { message: "Este campo no puede estar vacío" }) : base.optional();
+      let fieldSchema: z.ZodTypeAny;
+      if (field.required) {
+        fieldSchema = base.min(1, { message: "Este campo no puede estar vacío" });
+      } else {
+        if (field.type === "email") {
+          fieldSchema = z.union([z.literal(""), base]).optional();
+        } else {
+          fieldSchema = base.optional();
+        }
+      }
 
       schemaShape[field.id] = fieldSchema;
     });
@@ -76,8 +94,8 @@ export function DynamicForm({ fields, onSubmitData, isSubmitting, submitText = "
   // 2. Inicializar el formulario
   const form = useForm<DynamicFormValues>({
     resolver: zodResolver(dynamicSchema),
-    defaultValues: fields.reduce<Record<string, string>>((acc, field) => {
-      acc[field.id] = "";
+    defaultValues: fields.reduce<Record<string, any>>((acc, field) => {
+      acc[field.id] = field.type === "multiselect" ? [] : "";
       return acc;
     }, {}),
   });
@@ -99,10 +117,49 @@ export function DynamicForm({ fields, onSubmitData, isSubmitting, submitText = "
   };
 
   // 3. Renderizado dinámico de los inputs
-  const renderInput = (fieldConfig: FormFieldConfig, fieldProps: any) => {
+  const renderInput = (fieldConfig: FormFieldConfig, fieldProps: ControllerRenderProps<Record<string, any>, string>) => {
     const isError = !!form.formState.errors[fieldConfig.id];
 
     switch (fieldConfig.type) {
+    case "multiselect": {
+      const val = fieldProps.value as unknown;
+      const selectedValues: string[] = Array.isArray(val) ? (val as string[]) : [];
+      
+      const toggleOption = (optValue: string) => {
+        if (selectedValues.includes(optValue)) {
+          fieldProps.onChange(selectedValues.filter((v) => v !== optValue));
+        } else {
+          fieldProps.onChange([...selectedValues, optValue]);
+        }
+      };
+
+      return (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
+          {fieldConfig.options?.map((opt) => {
+            const isSelected = selectedValues.includes(opt.value);
+            return (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() => toggleOption(opt.value)}
+                className={`flex items-center justify-between px-4 py-3 rounded-xl border text-sm transition-all duration-200 text-left ${
+                  isSelected 
+                    ? "border-primary bg-primary/10 text-primary font-medium shadow-sm" 
+                    : "border-input bg-background hover:bg-secondary/50 text-foreground"
+                } ${isError ? "border-destructive/50" : ""}`}
+              >
+                <span className="mr-2 leading-tight">{opt.label}</span>
+                <div className={`shrink-0 w-4 h-4 rounded-sm border flex items-center justify-center transition-colors ${
+                  isSelected ? "border-primary bg-primary" : "border-muted-foreground/30"
+                }`}>
+                  {isSelected && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      );
+    }
     case "textarea":
       return (
         <Textarea
@@ -148,7 +205,7 @@ export function DynamicForm({ fields, onSubmitData, isSubmitting, submitText = "
     <Form {...form}>
       <form 
         onSubmit={(e) => { void form.handleSubmit(onSubmitData)(e); }} 
-        className="space-y-6 overflow-hidden"
+        className="space-y-6 overflow-hidden px-1"
       >
         <AnimatePresence mode="wait">
           <m.div 
